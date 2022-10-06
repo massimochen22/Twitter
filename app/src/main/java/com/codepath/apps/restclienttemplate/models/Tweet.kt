@@ -5,6 +5,7 @@ import org.json.JSONObject
 import com.codepath.apps.restclienttemplate.TimeFormatter
 
 class Tweet {
+    var id: Long = 0
     var body:String  = ""
     var createdAt:String  = ""
     var user:User?  = null
@@ -12,6 +13,7 @@ class Tweet {
     companion object{
         fun fromJson(jsonObject: JSONObject):Tweet{
             val tweet = Tweet()
+            tweet.id = jsonObject.getLong("id")
             tweet.body = jsonObject.getString("text")
             tweet.createdAt = TimeFormatter.getTimeDifference(jsonObject.getString("created_at"))
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"))

@@ -11,6 +11,8 @@ import com.codepath.apps.restclienttemplate.models.Tweet
 class TweetsAdapter(val tweets : ArrayList<Tweet>): RecyclerView.Adapter<TweetsAdapter.ViewHolder> (){
 
 
+    private var lastTweetId: Int = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
@@ -43,6 +45,10 @@ class TweetsAdapter(val tweets : ArrayList<Tweet>): RecyclerView.Adapter<TweetsA
     fun addAll(tweetList: List<Tweet>) {
         tweets.addAll(tweetList)
         notifyDataSetChanged()
+    }
+
+    fun getLastTweetId(): Long {
+        return tweets.get(getItemCount() - 1).id
     }
 
 
