@@ -3,7 +3,6 @@ package com.codepath.apps.restclienttemplate
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.codepath.apps.restclienttemplate.models.Tweet
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
@@ -20,6 +20,7 @@ const val CHARACTER_LIMIT = 280
 class ComposeActivity : AppCompatActivity() {
     lateinit var etCompose:EditText
     lateinit var btnTweet:Button
+    lateinit var tvCount: TextView
     lateinit var client: TwitterClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +30,13 @@ class ComposeActivity : AppCompatActivity() {
         etCompose = findViewById(R.id.etTweetCompose)
         btnTweet = findViewById(R.id.btnTweet)
         client = TwitterApplication.getRestClient(this)
+        tvCount = findViewById<TextView>(R.id.tvCount)
 
         btnTweet.setOnClickListener {
-
-//            Grab content od edit Text
             val tweetContent = etCompose.text.toString()
 //            1. make sure he tweet isn't empty
             if (tweetContent.isEmpty()){
                 Toast.makeText(this,"empty text is not allowed", Toast.LENGTH_SHORT).show()
-//                look snackbar message
             }
 //            2.Make sure tweet is under character count
             else{
@@ -67,27 +66,26 @@ class ComposeActivity : AppCompatActivity() {
                 }
             }
         }
-            val tvCount = findViewById<TextView>(R.id.tvCount)
-            etCompose.addTextChangedListener(object : TextWatcher {
-                val tweetContent = this.toString()
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    //reset tvCount text color in any case beforehand to prevent problems
-                    tvCount.setTextColor(Color.GRAY)
-                }
-                @SuppressLint("SetTextI18n")
-                override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    if (s != null) {
-                        if(s.length > CHARACTER_LIMIT) {
-                            tvCount.setTextColor(Color.RED)
-                        }
-                        tvCount.text = "Characters left: ${CHARACTER_LIMIT - s.length}"
+        etCompose.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //reset tvCount text color in any case beforehand to prevent problems
+                tvCount.setTextColor(Color.GRAY)
+            }
+            @SuppressLint("SetTextI18n")
+            override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (s != null) {
+                    if(s.length > CHARACTER_LIMIT) {
+                        tvCount.setTextColor(Color.RED)
                     }
+                    tvCount.text = "Characters left: ${CHARACTER_LIMIT - s.length}"
                 }
+            }
 
-                override fun afterTextChanged(p0: Editable?) {
-                    TODO("Not yet implemented")
-                }
-            })
+            override fun afterTextChanged(p0: Editable?) {
+                print("")
+            }
+
+        })
     }
 
     companion object {
