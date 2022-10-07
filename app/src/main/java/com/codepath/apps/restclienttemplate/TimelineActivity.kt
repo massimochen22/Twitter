@@ -11,6 +11,10 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
 import org.json.JSONException
 import EndlessRecyclerViewScrollListener
+import android.content.Intent
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 
 class TimelineActivity : AppCompatActivity() {
 
@@ -57,6 +61,24 @@ class TimelineActivity : AppCompatActivity() {
 
         populateHomeTimeline(false)
 
+    }
+
+    //Method called back when the user comes from ComposeActivity
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+            //get tweet object back from ComposeActivity
+            val tweet = data?.getParcelableExtra("tweet") as Tweet
+
+            //update timeline
+            //modify data source of tweets
+            tweets.add(0, tweet)
+            //update adapter
+            adapter.notifyItemInserted(0)
+            //scroll adapter back to the first position so we can see the tweet the user composed
+            rvTweets.smoothScrollToPosition(0)
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun populateHomeTimeline(isLoadMore: Boolean) {
@@ -115,7 +137,23 @@ class TimelineActivity : AppCompatActivity() {
 
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+        return true
+    }
+//Handles click on menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.compose){
+//            Navigate compose screen
+            val intent = Intent(this,ComposeActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     companion object {
         val TAG = "TimelineActivity"
+        val REQUEST_CODE = 10
     }
 }
