@@ -28,4 +28,16 @@
         android:text="Tweet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etTweetCompose" />
+    <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Characters left: 280"
+        android:textAlignment="textStart"
+        android:textColor="#808080"
+        android:layout_marginRight="15dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/btnTweet"
+        app:layout_constraintEnd_toStartOf="@+id/btnTweet"
+        app:layout_constraintTop_toTopOf="@+id/btnTweet" />
 </androidx.constraintlayout.widget.ConstraintLayout>
