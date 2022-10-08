@@ -15,6 +15,7 @@ import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TimelineActivity : AppCompatActivity() {
 
@@ -56,6 +57,11 @@ class TimelineActivity : AppCompatActivity() {
                 Log.i(TAG, "Populating rv with more items")
                 populateHomeTimeline(true)
             }
+        }
+        val btnCompose = findViewById<FloatingActionButton>(R.id.compose)
+        btnCompose.setOnClickListener {
+            val intent = Intent(this, ComposeActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE)
         }
         rvTweets.addOnScrollListener(scrollListener)
 
@@ -142,15 +148,15 @@ class TimelineActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main,menu)
         return true
     }
-//Handles click on menu
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.compose){
-//            Navigate compose screen
-            val intent = Intent(this,ComposeActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE)
-        }
-        return super.onOptionsItemSelected(item)
-    }
+////Handles click on menu
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == R.id.compose){
+////            Navigate compose screen
+//            val intent = Intent(this,ComposeActivity::class.java)
+//            startActivityForResult(intent, REQUEST_CODE)
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     companion object {
         val TAG = "TimelineActivity"
